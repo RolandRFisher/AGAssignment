@@ -10,14 +10,14 @@ using Core.Models;
 
 namespace Service.Twitter
 {
-    public class TwitterService:ITwitterService, IReportService
+    public class TwitterService: ITwitterService
     {
         public TwitterService()
         {
             
         }
 
-        public IEnumerable<TwitterModel> GenerateReport()
+        private static IEnumerable<TwitterModel> GenerateReport()
         {
             var userSource = GetUsersFromSource();
             var tempList = GetAllUsers(userSource);
@@ -173,6 +173,5 @@ namespace Service.Twitter
             }
 
         }
-
     }
 }

@@ -5,6 +5,6 @@ namespace Core.Interfaces
 {
     public interface ITwitterService
     {
-        IEnumerable<TwitterModel> GenerateReport();
+        void PrintReport();
     }
 }

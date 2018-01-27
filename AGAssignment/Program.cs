@@ -1,26 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using Autofac;
 using Core.Interfaces;
-using Core.Models;
 using Service.Twitter;
 
 namespace AGAssignment
 {
-    partial class Program
+    public class Program
     {
+        private static IContainer Container { get; set; }
+
         static void Main(string[] args)
         {
+
+            var builder = new ContainerBuilder();
+            builder.RegisterType<TwitterService>().As<ITwitterService>();
+            Container = builder.Build();
+            
+
             var sw = new Stopwatch();
             sw.Start();
 
 
-
-            var tSvc = new TwitterService();
-            tSvc.PrintReport();
+            using (var scope = Container.BeginLifetimeScope())
+            {
+                var execute = scope.Resolve<ITwitterService>();
+                execute.PrintReport();
+            }
 
             
 
@@ -30,5 +36,8 @@ namespace AGAssignment
             Console.WriteLine(format);
             sw.Stop();
         }
+        
+
+
     }
 }

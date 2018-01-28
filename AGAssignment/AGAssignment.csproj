@@ -61,6 +61,10 @@
       <Project>{0363CBE2-D464-4FDF-A751-395385A90FD4}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Repository\Repository.csproj">
+      <Project>{220334B5-0CC6-48D8-B47F-9373677EB67D}</Project>
+      <Name>Repository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TwitterService\Service.csproj">
       <Project>{96f31c89-7f57-46ce-8a5a-dd9d4a67454b}</Project>
       <Name>Service</Name>

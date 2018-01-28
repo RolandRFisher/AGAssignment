@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IReportService.cs" />
+    <Compile Include="Interfaces\ITwitterRepository.cs" />
     <Compile Include="Interfaces\ITwitterService.cs" />
     <Compile Include="Models\Tweet.cs" />
     <Compile Include="Models\TwitterModel.cs" />

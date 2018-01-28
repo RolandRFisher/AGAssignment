@@ -21,6 +21,7 @@ namespace Repository.Repositories
             _dalTweets = dalTweets;
         }
 
+        #region public methods
 
         public ICollection<Users> GetUsers()
         {
@@ -31,6 +32,8 @@ namespace Repository.Repositories
         public IEnumerable<Tweet> GetTweets()
         {
             return _dalTweets.GetTweets();
-        }
+        } 
+
+        #endregion
     }
 }

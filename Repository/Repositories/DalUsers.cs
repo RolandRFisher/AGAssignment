@@ -18,21 +18,23 @@ namespace Repository.Repositories
             _connectionstring = ConfigurationManager.AppSettings["UserFIle"];
         }
 
+        #region public methods
+
         public ICollection<Users> GetUsers()
         {
             var result = new List<Users>();
 
             var usrs = _textfile.GetData(_connectionstring);
-            var allUsers = GetAllUsers(usrs);
+            var userModel = BindUserModel(usrs);
 
 
-            if (allUsers == null) return result;
+            if (userModel == null) return result;
 
 
-            result = GetUsersWithFollowers(allUsers);
+            result = GetUsersWithFollowers(userModel);
 
 
-            var doNotFollowAnyone = GetUsersThatDoNotFollowAnyone(allUsers, result);
+            var doNotFollowAnyone = GetUsersThatDoNotFollowAnyone(userModel, result);
             foreach (var userId in doNotFollowAnyone)
             {
                 result.Add(new Users() { UserId = userId, Follows = new List<string>() });
@@ -40,9 +42,13 @@ namespace Repository.Repositories
 
 
             return result;
-        }
+        } 
 
-        private static IEnumerable<Users> GetAllUsers(IEnumerable<string> usrs)
+        #endregion
+
+        #region private methods
+
+        private static IEnumerable<Users> BindUserModel(IEnumerable<string> usrs)
         {
             var result = new List<Users>();
 
@@ -88,6 +94,8 @@ namespace Repository.Repositories
             var followed = result.Select(users => users.Follows).Distinct().SelectMany(fu => fu);
             var doNotFollowAnyone = followed.Except(followers).OrderBy(s => s).ToList();
             return doNotFollowAnyone;
-        }
+        } 
+
+        #endregion
     }
 }

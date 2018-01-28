@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using NLog;
 
 namespace Repository.DAL
 {
     public class TextFile : ITextFIle
     {
-        public TextFile()
-        {
-        }
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public IEnumerable<string> GetData(string connectionstring)
         {
@@ -19,7 +18,9 @@ namespace Repository.DAL
                 var userFIle = connectionstring;
                 if (!File.Exists(userFIle))
                 {
-                    throw new ArgumentException($"{connectionstring} does not exists.");
+                    var message = $"{connectionstring} does not exists.";
+                    Logger.Error(message);
+                    throw new ArgumentException(message);
                 }
 
                 using (var streamReader = File.OpenText(userFIle))
@@ -33,8 +34,7 @@ namespace Repository.DAL
             }
             catch (Exception e)
             {
-                //TODO: Use Logger
-                Console.WriteLine($"Error Message: {e.Message}.");
+                Logger.Error(e);
                 throw;
             };
 

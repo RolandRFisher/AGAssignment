@@ -42,9 +42,11 @@
   <ItemGroup>
     <Compile Include="Interfaces\IDalTweets.cs" />
     <Compile Include="Interfaces\IDalUsers.cs" />
+    <Compile Include="Interfaces\IReport.cs" />
     <Compile Include="Interfaces\ITextFIle.cs" />
     <Compile Include="Interfaces\ITwitterRepository.cs" />
     <Compile Include="Interfaces\ITwitterService.cs" />
+    <Compile Include="Interfaces\IWriter.cs" />
     <Compile Include="Models\Tweet.cs" />
     <Compile Include="Models\TwitterModel.cs" />
     <Compile Include="Models\Users.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using AGAssignment;
 using Core.Models;
 using Repository.DAL;
 
@@ -18,25 +19,23 @@ namespace Repository.Repositories
             _connectionstring = ConfigurationManager.AppSettings["TweetFile"];
         }
 
+        #region public methods
+
         public IEnumerable<Tweet> GetTweets()
         {
-            ////TODO: Get Data from Generic DataSource
-            //ICollection<string> lines = new Collection<string>
-            //{
-            //    "Alan> If you have a procedure with 10 parameters, you probably missed some.",
-            //    "Ward> There are only two hard things in Computer Science: cache invalidation, naming things and off-by-1 errors.",
-            //    "Alan> Random numbers should not be generated with a method chosen at random."
-            //};
-
             var tweets = _textfile.GetData(_connectionstring);
             return GetTweets(tweets);
         }
+
+        #endregion
+
+        #region private methods
 
         private static IEnumerable<Tweet> GetTweets(IEnumerable<string> line)
         {
             var result = new List<Tweet>();
 
-            const string gtIdentifier = "> ";
+            var gtIdentifier = Util.Gt;
             const int offset = 2;
 
             foreach (var l in line)
@@ -51,6 +50,8 @@ namespace Repository.Repositories
                 result.Add(new Tweet() { UserId = userId, UserTweet = userTweet });
             }
             return result;
-        }
+        } 
+
+        #endregion
     }
 }

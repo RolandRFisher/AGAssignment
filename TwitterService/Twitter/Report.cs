@@ -16,20 +16,16 @@ namespace Service.Twitter
 
         #region public methods
 
-        public IEnumerable<TwitterModel> GenerateReport()
+        public IEnumerable<TwitterModel> GetReport()
         {
             var userList = _twitterRepository.GetUsers();
             var tweets = _twitterRepository.GetTweets();
 
 
             return GenerateReport(userList.OrderBy(users => users.UserId).ToList(), tweets);
-        } 
+        }
 
-        #endregion
-
-        #region private methods
-
-        private static IEnumerable<TwitterModel> GenerateReport(IEnumerable<Users> userList, IEnumerable<Tweet> tweets)
+        public IEnumerable<TwitterModel> GenerateReport(IEnumerable<Users> userList, IEnumerable<Tweet> tweets)
         {
             var twitterReport = new List<TwitterModel>();
             if (tweets == null) return twitterReport;
@@ -62,8 +58,9 @@ namespace Service.Twitter
             }
 
             return twitterReport;
-        } 
+        }
 
         #endregion
+
     }
 }

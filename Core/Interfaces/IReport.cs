@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using Core.Models;
 
-namespace Service.Twitter
+namespace Core.Interfaces
 {
     public interface IReport
     {
-        IEnumerable<TwitterModel> GenerateReport();
+        IEnumerable<TwitterModel> GetReport();
+        IEnumerable<TwitterModel> GenerateReport(IEnumerable<Users> userList, IEnumerable<Tweet> tweets);
     }
 }

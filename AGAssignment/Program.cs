@@ -25,6 +25,7 @@ namespace AGAssignment
             builder.RegisterType<DalTweets>().As<IDalTweets>();
             builder.RegisterType<Report>().As<IReport>();
             builder.RegisterType<Writer>().As<IWriter>();
+            builder.RegisterType<TweetProcess>().As<ITweetProcess>();
             Container = builder.Build();
             
             using (var scope = Container.BeginLifetimeScope())

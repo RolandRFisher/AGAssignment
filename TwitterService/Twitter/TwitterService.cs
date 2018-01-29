@@ -25,7 +25,7 @@ namespace Service.Twitter
 
         public void PrintReport()
         {
-            var twitterReport = _report.GenerateReport();
+            var twitterReport = _report.GetReport();
 
             _writer.Print(twitterReport);
         }

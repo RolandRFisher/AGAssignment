@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Repository.DAL
+namespace Core.Interfaces
 {
     public interface ITextFIle
     {

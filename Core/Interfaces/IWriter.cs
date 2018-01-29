@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Core.Models;
 
-namespace Service.Twitter
+namespace Core.Interfaces
 {
     public interface IWriter
     {

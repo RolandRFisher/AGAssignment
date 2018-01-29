@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using Core.Interfaces;
 using Core.Models;
 using Repository.DAL;
 
@@ -44,11 +45,7 @@ namespace Repository.Repositories
             return result;
         } 
 
-        #endregion
-
-        #region private methods
-
-        private static IEnumerable<Users> BindUserModel(IEnumerable<string> usrs)
+        public IEnumerable<Users> BindUserModel(IEnumerable<string> usrs)
         {
             var result = new List<Users>();
 
@@ -67,10 +64,22 @@ namespace Repository.Repositories
             return result;
         }
 
-        private static List<Users> GetUsersWithFollowers(IEnumerable<Users> users)
+        public List<Users> GetUsersWithFollowers(IEnumerable<Users> users)
         {
             return (List<Users>)UsersWithFollowers(users);
         }
+
+        public IEnumerable<string> GetUsersThatDoNotFollowAnyone(IEnumerable<Users> allUsers, IEnumerable<Users> result)
+        {
+            var followers = allUsers.Select(users => users.UserId).Distinct();
+            var followed = result.Select(users => users.Follows).Distinct().SelectMany(fu => fu);
+            var doNotFollowAnyone = followed.Except(followers).OrderBy(s => s).ToList();
+            return doNotFollowAnyone;
+        }
+
+        #endregion
+
+        #region private methods
 
         private static IEnumerable<Users> UsersWithFollowers(IEnumerable<Users> userList)
         {
@@ -87,14 +96,6 @@ namespace Repository.Repositories
 
             return result;
         }
-
-        private static IEnumerable<string> GetUsersThatDoNotFollowAnyone(IEnumerable<Users> allUsers, IEnumerable<Users> result)
-        {
-            var followers = allUsers.Select(users => users.UserId).Distinct();
-            var followed = result.Select(users => users.Follows).Distinct().SelectMany(fu => fu);
-            var doNotFollowAnyone = followed.Except(followers).OrderBy(s => s).ToList();
-            return doNotFollowAnyone;
-        } 
 
         #endregion
     }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Core.Models;
 
-namespace Repository.Repositories
+namespace Core.Interfaces
 {
     public interface IDalTweets
     {

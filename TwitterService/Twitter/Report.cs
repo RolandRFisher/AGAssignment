@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using Core.Interfaces;
 using Core.Models;
@@ -8,28 +10,26 @@ namespace Service.Twitter
     public class Report:IReport
     {
         private readonly ITwitterRepository _twitterRepository;
+        private int _tweetLengthLimit;
 
         public Report(ITwitterRepository twitterRepository)
         {
             _twitterRepository = twitterRepository;
+            _tweetLengthLimit = Convert.ToInt32(ConfigurationManager.AppSettings["LimitTweetTo"]);
         }
 
         #region public methods
 
-        public IEnumerable<TwitterModel> GenerateReport()
+        public IEnumerable<TwitterModel> GetReport()
         {
             var userList = _twitterRepository.GetUsers();
             var tweets = _twitterRepository.GetTweets();
 
 
-            return GenerateReport(userList.OrderBy(users => users.UserId).ToList(), tweets);
-        } 
+            return GenerateReport(userList.OrderBy(users => users.UserId).ToList(), tweets, _tweetLengthLimit);
+        }
 
-        #endregion
-
-        #region private methods
-
-        private static IEnumerable<TwitterModel> GenerateReport(IEnumerable<Users> userList, IEnumerable<Tweet> tweets)
+        public IEnumerable<TwitterModel> GenerateReport(IEnumerable<Users> userList, IEnumerable<Tweet> tweets, int tweetLengthLimit)
         {
             var twitterReport = new List<TwitterModel>();
             if (tweets == null) return twitterReport;
@@ -43,16 +43,18 @@ namespace Service.Twitter
                 var twts = new List<Tweet>();
                 foreach (var userTweet in tweets)
                 {
+                    var uTweet = userTweet.UserTweet.Substring(0, Math.Min(tweetLengthLimit, userTweet.UserTweet.Length));
+
                     if (userTweet.UserId == user.UserId)
                     {
-                        twts.Add(new Tweet() { UserId = userTweet.UserId, UserTweet = userTweet.UserTweet });
+                        twts.Add(new Tweet() { UserId = userTweet.UserId, UserTweet = uTweet });
                     }
 
                     foreach (var followedUser in followsList)
                     {
                         if (followedUser == userTweet.UserId)
                         {
-                            twts.Add(new Tweet() { UserId = userTweet.UserId, UserTweet = userTweet.UserTweet });
+                            twts.Add(new Tweet() { UserId = userTweet.UserId, UserTweet = uTweet });
                         }
                     }
                 }
@@ -62,8 +64,9 @@ namespace Service.Twitter
             }
 
             return twitterReport;
-        } 
+        }
 
         #endregion
+
     }
 }

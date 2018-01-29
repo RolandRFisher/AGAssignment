@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using AGAssignment;
+using Core.Interfaces;
 using Core.Models;
 using Repository.DAL;
 
@@ -12,11 +13,13 @@ namespace Repository.Repositories
     {
         private readonly ITextFIle _textfile;
         private readonly string _connectionstring;
+        private readonly ITweetProcess _tweetProcess;
 
-        public DalTweets(ITextFIle textFile)
+        public DalTweets(ITextFIle textFile, ITweetProcess tweetProcess)
         {
             _textfile = textFile;
             _connectionstring = ConfigurationManager.AppSettings["TweetFile"];
+            _tweetProcess = tweetProcess;
         }
 
         #region public methods
@@ -24,33 +27,12 @@ namespace Repository.Repositories
         public IEnumerable<Tweet> GetTweets()
         {
             var tweets = _textfile.GetData(_connectionstring);
-            return GetTweets(tweets);
+            return _tweetProcess.GetTweets(tweets);
         }
 
         #endregion
 
         #region private methods
-
-        private static IEnumerable<Tweet> GetTweets(IEnumerable<string> line)
-        {
-            var result = new List<Tweet>();
-
-            var gtIdentifier = Util.Gt;
-            const int offset = 2;
-
-            foreach (var l in line)
-            {
-                var lLength = l.Length;
-                var gtIndex = l.IndexOf(gtIdentifier, StringComparison.InvariantCultureIgnoreCase);
-                var i = lLength - (gtIndex + offset);
-                var userTweet = l.Substring(gtIndex + offset, i);
-
-                var userId = l.Substring(0, gtIndex);
-
-                result.Add(new Tweet() { UserId = userId, UserTweet = userTweet });
-            }
-            return result;
-        } 
 
         #endregion
     }

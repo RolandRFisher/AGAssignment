@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using Autofac;
 using Core.Interfaces;
@@ -6,6 +7,7 @@ using NLog;
 using Repository.DAL;
 using Repository.Repositories;
 using Service.Twitter;
+using IContainer = System.ComponentModel.IContainer;
 
 namespace AGAssignment
 {
@@ -14,7 +16,7 @@ namespace AGAssignment
         //TODO: Create unit tests
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private static IContainer Container { get; set; }
+        private static Autofac.IContainer Container { get; set; }
         static void Main(string[] args)
         {
             var builder = new ContainerBuilder();

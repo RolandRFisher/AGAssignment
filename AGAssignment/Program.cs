@@ -15,7 +15,7 @@ namespace AGAssignment
     {
         //TODO: Create unit tests
         //Test2
-
+        //Test4
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static Autofac.IContainer Container { get; set; }
         static void Main(string[] args)
